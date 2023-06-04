@@ -9,5 +9,9 @@
         "sourceType": "module"
     },
     "rules": {
+        "linebreak-style": ["warn", "unix"],
+        "quotes": ["error", "double"],
+        "import/no-named-as-default": 0,
+        "import/no-named-as-default-member": 0
     }
 }
