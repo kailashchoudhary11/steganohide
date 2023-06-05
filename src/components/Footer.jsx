@@ -1,3 +1,7 @@
 export default function Footer() {
-  return <h1>This is Footer</h1>;
+  return (
+    <footer>
+      <span>Copyright &#169; SteganoHide </span>
+    </footer>
+  );
 }
