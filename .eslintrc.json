@@ -9,7 +9,7 @@
         "sourceType": "module"
     },
     "rules": {
-        "linebreak-style": ["warn", "unix"],
+        "linebreak-style": [0, "unix"],
         "quotes": ["error", "double"],
         "import/no-named-as-default": 0,
         "import/no-named-as-default-member": 0,
