@@ -6,15 +6,15 @@ import {
 } from "react-router-dom";
 import Layout from "./components/Layout";
 import Home from "./pages/HomePage";
-import Hide, { action as hidePageAction } from "./pages/HidePage";
-import Reveal from "./pages/RevealPage";
+import HidePage, { action as hidePageAction } from "./pages/HidePage";
+import RevealPage, { action as revealPageAction } from "./pages/RevealPage";
 
 const router = createBrowserRouter(
   createRoutesFromElements(
     <Route path="/" element={<Layout />}>
       <Route index element={<Home />} />
-      <Route action={hidePageAction} path="hide" element={<Hide />} />
-      <Route path="reveal" element={<Reveal />} />
+      <Route action={hidePageAction} path="hide" element={<HidePage />} />
+      <Route action={revealPageAction} path="reveal" element={<RevealPage />} />
     </Route>,
   ),
 );
