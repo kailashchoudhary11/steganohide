@@ -22,12 +22,12 @@ export default function HidePage() {
 
   return !actionData ? (
     <Form method="post" encType="multipart/form-data">
-      <input type="text" name="msg" />
-      <input type="text" name="key" />
+      <input type="text" name="secret_text" />
+      <input type="password" name="password" />
       <input
         type="file"
         alt="image"
-        name="img"
+        name="image"
         accept="image/png, image/gif, image/jpeg"
       />
       <button type="submit">Submit</button>

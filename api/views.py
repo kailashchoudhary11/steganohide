@@ -15,12 +15,18 @@ class HideText(APIView):
         return Response(serializer.data)
 
     def post(self, request):
-        image = get_processed_image(request.FILES.get('img'), request.data.get('msg'))
+        raw_img = request.FILES.get('image')
+        secret_msg = request.data.get('secret_text').encode('utf8')
+        password = request.data.get('password').encode('utf8')
+        
+        image = get_processed_image(raw_img, secret_msg, password)
         data = {"img": image}
+
         serializer = SecretInfoSerializer(data=data, context={"request": request})
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data)
+
         return Response(serializer.errors)
 
 class Endpoints(APIView):
@@ -33,5 +39,9 @@ class RevealText(APIView):
     parser_classes = (FormParser, MultiPartParser)
 
     def post(self, request):
-        text = get_text(request.FILES.get('img'))
+        image = request.FILES.get('image')
+        password = request.data.get('password').encode('utf8')
+
+        text = get_text(image, password)
+
         return Response(data={"secret_text": text})

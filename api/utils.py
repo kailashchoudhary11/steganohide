@@ -15,20 +15,22 @@ BLOCK_SIZE = 32 # Bytes
 data = b'hello world'
 password = b"this is my password and it is so awesome"
 
-# hide encrypted data in image
-def get_processed_image(raw_img, secret_text):
+# hide data in image
+def get_processed_image(raw_img, secret_text, password):
     with Image.open(raw_img) as img:
         img = img.convert('RGB')
-        secret = lsb.hide(img, secret_text)
+        enc_text = encrypt(secret_text, password).decode('latin1')
+        secret = lsb.hide(img, enc_text)
     img_io = BytesIO()
     secret.save(img_io, format="PNG", quality=100)
     image = ContentFile(img_io.getvalue(), raw_img.name)
     return image
 
-# get encrypted data from image
-def get_text(img):
-    text = lsb.reveal(img)
-    return text
+# get data from image
+def get_text(image, password):
+    enc_text = lsb.reveal(image).encode('latin1')
+    secret_data = decrypt(enc_text, password)
+    return secret_data
 
 # get key from password
 def get_key(password):
@@ -48,4 +50,4 @@ def decrypt(enc_data, password):
     key = get_key(password)
     decipher = AES.new(key, AES.MODE_ECB)
     msg_dec = decipher.decrypt(enc_data)
-    print(unpad(msg_dec, BLOCK_SIZE))
+    return unpad(msg_dec, BLOCK_SIZE).decode('utf-8')

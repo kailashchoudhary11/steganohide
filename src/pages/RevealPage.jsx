@@ -11,8 +11,12 @@ export default function RevealPage() {
   const actionData = useActionData();
   return !actionData ? (
     <Form method="post" encType="multipart/form-data">
-      <input type="text" name="key" />
-      <input type="file" name="img" accept="image/png, image/gif, image/jpeg" />
+      <input type="password" name="password" />
+      <input
+        type="file"
+        name="image"
+        accept="image/png, image/gif, image/jpeg"
+      />
       <button type="submit">Reveal</button>
     </Form>
   ) : (
