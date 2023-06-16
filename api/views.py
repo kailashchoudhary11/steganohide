@@ -5,7 +5,6 @@ from .models import SecretInfo
 from .serializers import SecretInfoSerializer
 from .utils import get_processed_image, get_text
 
-
 class HideText(APIView):
     parser_classes = (MultiPartParser, FormParser)
 
