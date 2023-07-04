@@ -5,6 +5,11 @@ import "../App.css";
 import "../css/button.css";
 import { Link } from "react-router-dom";
 
+import HeroSection from "../assets/heroSection.jpeg";
+import AboutImage from "../assets/about.jpg";
+import MissionImage from "../assets/mission.jpg";
+import SecurityImage from "../assets/security.png";
+
 export default function Home() {
   useEffect(() => {
     async function getData() {
@@ -43,7 +48,7 @@ export default function Home() {
             </button>
           </Link>
         </div>
-        <img src="/public/heroSection.jpeg" alt="Hero" className="hero-image" />
+        <img src={HeroSection} alt="Hero" className="hero-image" />
       </div>
       <hr />
       <div className="Allabout">
@@ -61,13 +66,13 @@ export default function Home() {
             </p>
           </div>
           <div className="grid-item">
-            <img src="/public/about.jpg" alt="About" className="about-image" />
+            <img src={AboutImage} alt="About" className="about-image" />
           </div>
         </div>
 
         <div className="mission">
           <div className="grid-item">
-            <img src="/public/mission.jpg" alt="Mission" className="about-image" />
+            <img src={MissionImage} alt="Mission" className="about-image" />
           </div>
           <div className="grid-item" id="para2">
             <h1>Mission</h1>
@@ -93,7 +98,7 @@ export default function Home() {
             </p>
           </div>
           <div className="grid-item">
-            <img src="/public/security.png" alt="Security" className="about-image" />
+            <img src={SecurityImage} alt="Security" className="about-image" />
           </div>
         </div>
       </div>
