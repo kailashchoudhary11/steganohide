@@ -1,6 +1,7 @@
 import axios from "axios";
 import { Form, useActionData } from "react-router-dom";
 import { saveAs } from "file-saver";
+import "../css/hide.css";
 
 export async function action({ request }) {
   const formData = await request.formData();
@@ -21,17 +22,23 @@ export default function HidePage() {
   }
 
   return !actionData ? (
-    <Form method="post" encType="multipart/form-data">
-      <input type="text" name="secret_text" />
-      <input type="password" name="password" />
-      <input
-        type="file"
-        alt="image"
-        name="image"
-        accept="image/png, image/gif, image/jpeg"
-      />
-      <button type="submit">Submit</button>
-    </Form>
+    <div className="glass-container">
+    <div className="container">
+    <div>
+      <form method="post" encType="multipart/form-data" className="form">
+        <input type="text" name="secret_text" className="input-field" placeholder="Secret Text" />
+        <input type="password" name="password" className="input-field" placeholder="Password" />
+        <input type="file" alt="image" name="image" accept="image/png, image/gif, image/jpeg" className="input-field" />
+        <button type="submit" className="submit-button">Submit</button>
+      </form>
+      </div>
+      <div className="image-container">
+        <img src="/public/hide.jpg" alt="Image" className="form-image" />
+      </div>
+    </div>
+  </div>
+  
+  
   ) : (
     <div>
       <div>Processed Image is as below:</div>
