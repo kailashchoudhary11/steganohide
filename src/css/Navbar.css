@@ -30,15 +30,20 @@
     font-weight: bold;
     transition: color 0.3s ease-in-out;
   }
-  
   .navbar a:hover {
     color: #e0e0e0;
+    text-shadow: 0 0 5px #e0e0e0;
   }
   
   .navbar a.active {
     color: #f8f8f8;
+    text-shadow: 0 0 5px #f8f8f8;
+    border-bottom: 3px solid #f8f8f8;
+    padding: 0px 5px 5px 5px; 
+    text-decoration: none;
+    border-radius: 3px;
   }
-
+  
   .logo-image{
     width: 50%;
     /* margin-left: 20%; */
@@ -54,4 +59,5 @@
       margin: 5px;
     }
   }
+  
   
