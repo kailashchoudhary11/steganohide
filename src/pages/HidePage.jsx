@@ -24,19 +24,21 @@ export default function HidePage() {
   }
 
   return !actionData ? (
-    <div className="glass-container">
-      <div className="container">
-        <div>
-          <Form method="post" encType="multipart/form-data" className="form">
-            <input type="text" name="secret_text" className="input-field" placeholder="Secret Text" />
-            <input type="password" name="password" className="input-field" placeholder="Password" />
-            <input type="file" alt="image" name="image" accept="image/png, image/gif, image/jpeg" className="input-field" />
-            <button type="submit" className="submit-button">Submit</button>
-          </Form>
+    <div class="container">
+      <div className="glass-container2">
+        <div class="image-container">
+          <img src={HideImage} alt="Hide" class="form-image" />
         </div>
-        <div className="image-container">
-          <img src={HideImage} alt="Hide" className="form-image" />
+        <div class="form-container">
+          <form method="post" enctype="multipart/form-data" class="form">
+            <input type="text" name="secret_text" class="input-field" placeholder="Enter Secret Text" />
+            <input type="password" name="password" class="input-field" placeholder="Enter Password" />
+            <input type="file" alt="image" name="image" accept="image/png, image/gif, image/jpeg" class="input-field" />
+            <button type="submit" class="submit-button2">Hide</button>
+          </form>
         </div>
+      </div>
+      <div>
       </div>
     </div>
 
