@@ -2,6 +2,8 @@ import { Form, useActionData } from "react-router-dom";
 import axios from "axios";
 import "../css/reveal.css";
 
+import RevealImage from "../assets/reveal.jpg";
+
 export async function action({ request }) {
   const formData = await request.formData();
   const res = await axios.post("http://127.0.0.1:8000/api/reveal/", formData);
@@ -14,7 +16,7 @@ export default function RevealPage() {
     <div className="glass-container">
       <div className="form-container">
         <div className="image-container">
-          <img src="/public/reveal.jpg" alt="Reveal" className="form-image" />
+          <img src={RevealImage} alt="Reveal" className="form-image" />
         </div>
         <div>
           <Form method="post" encType="multipart/form-data" className="form">

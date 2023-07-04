@@ -3,6 +3,8 @@ import { Form, useActionData } from "react-router-dom";
 import { saveAs } from "file-saver";
 import "../css/hide.css";
 
+import HideImage from "../assets/hide.jpg";
+
 export async function action({ request }) {
   const formData = await request.formData();
   const res = await axios.post("http://127.0.0.1:8000/api/hide/", formData, {
@@ -33,7 +35,7 @@ export default function HidePage() {
           </Form>
         </div>
         <div className="image-container">
-          <img src="/public/hide.jpg" alt="Hide" className="form-image" />
+          <img src={HideImage} alt="Hide" className="form-image" />
         </div>
       </div>
     </div>
