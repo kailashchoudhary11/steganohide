@@ -59,6 +59,7 @@ export default function RevealPage() {
             <GoCopy className="copy-icon" />
           </button>
         ) : (
+
           <div className="copied">
             <FcCheckmark className="check-icon" />
             <span className="copy-text">Copied</span>
