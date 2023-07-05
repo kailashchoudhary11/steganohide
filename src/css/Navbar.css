@@ -35,7 +35,7 @@
     text-shadow: 0 0 5px #e0e0e0;
   }
   
-  .navbar a.active {
+  .navbar a.active-link {
     color: #f8f8f8;
     text-shadow: 0 0 5px #f8f8f8;
     border-bottom: 3px solid #f8f8f8;
