@@ -13,25 +13,27 @@ export async function action({ request }) {
 export default function RevealPage() {
   const actionData = useActionData();
   return !actionData ? (
-    <div className="glass-container">
+    <div className="glass-container2">
       <div className="form-container">
         <div className="image-container">
           <img src={RevealImage} alt="Reveal" className="form-image" />
         </div>
         <div>
           <Form method="post" encType="multipart/form-data" className="form">
-            <input type="password" name="password" className="input-field" placeholder="Password" />
             <input type="file" name="image" accept="image/png, image/gif, image/jpeg" className="input-field" />
-            <button type="submit" className="submit-button">Reveal</button>
+            <input type="password" name="password" className="input-field" placeholder="Password" />
+            <button type="submit" className="submit-button2">Reveal</button>
           </Form>
         </div>
       </div>
     </div>
 
   ) : (
-    <div>
-      Your Secret Text is:
-      <div>{actionData.secret_text}</div>
+    <div className="container">
+      <h1>Your Secret Text:</h1>
+      <div className="glass-container3">
+      <p className="text2">{actionData.secret_text}</p> 
+      </div>
     </div>
   );
 }
