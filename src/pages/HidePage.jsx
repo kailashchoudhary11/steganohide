@@ -24,29 +24,46 @@ export default function HidePage() {
   }
 
   return !actionData ? (
-    <div className="glass-container">
-      <div className="container">
+    // <div class="container">
+    //   <div className="glass-container2">
+    //     <div class="image-container">
+    //       <img src={HideImage} alt="Hide" class="form-image" />
+
+    //       <div>
+    //         <Form method="post" encType="multipart/form-data" className="form">
+    //           <input type="text" name="secret_text" className="input-field" placeholder="Secret Text" />
+    //           <input type="password" name="password" className="input-field" placeholder="Password" />
+    //           <input type="file" alt="image" name="image" accept="image/png, image/gif, image/jpeg" className="input-field" />
+    //           <button type="submit" className="submit-button">Submit</button>
+    //         </Form>
+    //       </div>
+    //     </div>
+    //   </div>
+    //   </div>
+
+    <div className="glass-container2">
+      <div className="form-container">
+        <div className="image-container">
+          <img src={HideImage} alt="Hide" class="form-image" />
+        </div>
         <div>
           <Form method="post" encType="multipart/form-data" className="form">
             <input type="text" name="secret_text" className="input-field" placeholder="Secret Text" />
             <input type="password" name="password" className="input-field" placeholder="Password" />
             <input type="file" alt="image" name="image" accept="image/png, image/gif, image/jpeg" className="input-field" />
-            <button type="submit" className="submit-button">Submit</button>
+            <button type="submit" className="submit-button2">Submit</button>
           </Form>
-        </div>
-        <div className="image-container">
-          <img src={HideImage} alt="Hide" className="form-image" />
         </div>
       </div>
     </div>
 
   ) : (
-    <div>
-      <div>Processed Image is as below:</div>
-      <div>
+    <div className="container">
+      <h1>Processed Image</h1>
+      <div className="image-container2">
         <img src={actionData?.img} alt="Processed" />
       </div>
-      <button type="button" onClick={handleDownloadClick}>
+      <button type="button" className="submit-button2" onClick={handleDownloadClick}>
         Download Image
       </button>
     </div>
