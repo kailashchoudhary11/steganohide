@@ -69,11 +69,16 @@
 .copy-btn {
   border: none;
   background-color: rgba(255, 255, 255, 0.1);
+  border-radius: 10px;
+  padding: 10px;
+}
+.copy-btn:hover{
+  background-color: rgba(253, 253, 253, 0.25);
 }
 
 .copy-icon {
-  height: 60px;
-  width: 60px;
+  height: 35px;
+  width: 55px;
   color: white;
 }
 
@@ -88,4 +93,11 @@
 
 .copy-text {
   font-size: 15px;
+}
+
+.copied{
+  display: flex;
+  gap: 5px;
+  justify-content: start;
+  align-items: center;
 }
