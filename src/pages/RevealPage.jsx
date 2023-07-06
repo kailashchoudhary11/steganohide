@@ -11,7 +11,6 @@ export async function action({ request }) {
   const formData = await request.formData();
   try {
     const res = await axios.post("http://127.0.0.1:8000/api/reveal/", formData);
-    console.log(res.data);
     return res.data;
   } catch (error) {
     return error.response.data;
@@ -23,7 +22,6 @@ export default function RevealPage() {
   const actionData = useActionData();
 
   const navigation = useNavigation();
-  console.log(navigation.state);
 
   function copyText() {
     navigator.clipboard.writeText(actionData.secret_text);
