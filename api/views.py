@@ -46,5 +46,12 @@ class RevealText(APIView):
         try:
             text = get_text(image, password)
             return Response(data={"secret_text": text})
-        except Exception:
-            return Response(data={'error': 'Incorrect Password'}, status=status.HTTP_401_UNAUTHORIZED)
+        except Exception as e:
+            error_msg = ''
+            error = str(e)
+            if 'detect' in error.lower():
+                error_msg = 'The Image Does Not Contain Hidden Text'
+            else:
+                error_msg = 'Incorrect Password'
+                
+            return Response(data={'error': error_msg}, status=status.HTTP_401_UNAUTHORIZED)
