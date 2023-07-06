@@ -1,6 +1,7 @@
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework.parsers import MultiPartParser, FormParser
+from rest_framework import status
 from .models import SecretInfo
 from .serializers import SecretInfoSerializer
 from .utils import get_processed_image, get_text
@@ -42,7 +43,8 @@ class RevealText(APIView):
     def post(self, request):
         image = request.FILES.get('image')
         password = request.data.get('password').encode('utf8')
-
-        text = get_text(image, password)
-
-        return Response(data={"secret_text": text})
+        try:
+            text = get_text(image, password)
+            return Response(data={"secret_text": text})
+        except Exception:
+            return Response(data={'error': 'Incorrect Password'}, status=status.HTTP_401_UNAUTHORIZED)
