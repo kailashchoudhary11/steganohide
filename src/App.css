@@ -114,6 +114,7 @@ h1:hover::after {
   position: relative;
   border-radius: 10px;
   transition: transform 0.3s ease-in-out;
+  animation: moveImage 2s infinite alternate;
 }
 
 .hero-image:hover {
@@ -149,5 +150,17 @@ h1:hover::after {
 
   100% {
     opacity: 0;
+  }
+}
+
+@keyframes moveImage {
+  0% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(10px);
+  }
+  100% {
+    transform: translateY(0);
   }
 }
