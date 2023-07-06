@@ -3,7 +3,6 @@ import axios from "axios";
 import "../App.css";
 import "../css/button.css";
 import { Link } from "react-router-dom";
-
 import HeroSection from "../assets/heroSection.jpeg";
 import AboutImage from "../assets/about.jpg";
 import MissionImage from "../assets/mission.jpg";
