@@ -12,6 +12,7 @@ export async function action({ request }) {
       "Content-Type": "multipart/form-data",
     },
   });
+  console.log(res.data.name);
   return res.data;
 }
 
@@ -20,7 +21,8 @@ export default function HidePage() {
 
   function handleDownloadClick() {
     const url = actionData?.img;
-    saveAs(url, "hidden-img.png");
+    const name = actionData?.name;
+    saveAs(url, name);
   }
 
   return !actionData ? (

@@ -24,7 +24,9 @@ class HideText(APIView):
         serializer = SecretInfoSerializer(data=data, context={"request": request})
         if serializer.is_valid():
             serializer.save()
-            return Response(serializer.data)
+            augmented_serializer_data = dict(serializer.data)
+            augmented_serializer_data['name'] = raw_img.name
+            return Response(augmented_serializer_data)
 
         return Response(serializer.errors)
 
