@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Form, useActionData } from "react-router-dom";
+import { Form, useActionData, useNavigation } from "react-router-dom";
 import axios from "axios";
 import "../css/reveal.css";
 
@@ -9,20 +9,28 @@ import RevealImage from "../assets/reveal.jpg";
 
 export async function action({ request }) {
   const formData = await request.formData();
-  const res = await axios.post("http://127.0.0.1:8000/api/reveal/", formData);
-  return res.data;
+  try {
+    const res = await axios.post("http://127.0.0.1:8000/api/reveal/", formData);
+    console.log(res.data);
+    return res.data;
+  } catch (error) {
+    return error.response.data;
+  }
 }
 
 export default function RevealPage() {
   const [isCopied, setIsCopied] = useState(false);
   const actionData = useActionData();
 
+  const navigation = useNavigation();
+  console.log(navigation.state);
+
   function copyText() {
     navigator.clipboard.writeText(actionData.secret_text);
     setIsCopied(!isCopied);
   }
 
-  return !actionData ? (
+  return !actionData || (actionData && actionData.error) ? (
     <div className="glass-container2">
       <div className="form-container">
         <div className="image-container">
@@ -42,8 +50,13 @@ export default function RevealPage() {
               className="input-field"
               placeholder="Password"
             />
-            <button type="submit" className="submit-button2">
-              Reveal
+            {actionData?.error && <div className="red">{actionData?.error}</div>}
+            <button
+              disabled={navigation.state === "submitting"}
+              type="submit"
+              className="submit-button2"
+            >
+              {navigation.state === "submitting" ? "Revealing..." : "Reveal"}
             </button>
           </Form>
         </div>
@@ -59,7 +72,6 @@ export default function RevealPage() {
             <GoCopy className="copy-icon" />
           </button>
         ) : (
-
           <div className="copied">
             <FcCheckmark className="check-icon" />
             <span className="copy-text">Copied</span>
