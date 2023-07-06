@@ -1,5 +1,6 @@
 body {
-  background-image: url(/bg4.jpg);
+  /* background-image: url(/bg4.jpg); */
+  background: linear-gradient(143deg, #006484, #01143f, #005e9e, #5a1033);
   background-size: cover; 
   font-family: 'Titillium Web', sans-serif;
   }
