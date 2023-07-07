@@ -3,8 +3,16 @@ from rest_framework.response import Response
 from rest_framework.parsers import MultiPartParser, FormParser
 from rest_framework import status
 from .models import SecretInfo
-from .serializers import SecretInfoSerializer
+from .serializers import SecretInfoSerializer, UserSerializer
 from .utils import get_processed_image, get_text
+
+class RegisterUser(APIView):
+    def post(self, request):
+        serializer = UserSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response({"response": "User Created"})
+        return Response(serializer.errors)
 
 class HideText(APIView):
     parser_classes = (MultiPartParser, FormParser)

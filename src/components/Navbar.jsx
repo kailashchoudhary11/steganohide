@@ -14,6 +14,8 @@ function Navbar() {
         <NavLink className={({ isActive }) => (isActive ? "active-link" : "")} to=".">Home</NavLink>
         <NavLink className={({ isActive }) => (isActive ? "active-link" : "")} to="hide">Hide</NavLink>
         <NavLink className={({ isActive }) => (isActive ? "active-link" : "")} to="reveal">Reveal</NavLink>
+        <NavLink className={({ isActive }) => (isActive ? "active-link" : "")} to="login">Login</NavLink>
+        <NavLink className={({ isActive }) => (isActive ? "active-link" : "")} to="register">Register</NavLink>
       </div>
     </nav>
   );
