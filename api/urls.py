@@ -14,7 +14,7 @@ urlpatterns = [
     path('reveal/', RevealText.as_view(), name='reveal-text'),
 
     # Auth
-    path('register', RegisterUser.as_view(), name='register_user'),
+    path('register/', RegisterUser.as_view(), name='register_user'),
 
     # JWT Authentication
     path('token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),

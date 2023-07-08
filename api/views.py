@@ -12,7 +12,8 @@ class RegisterUser(APIView):
         if serializer.is_valid():
             serializer.save()
             return Response({"response": "User Created"})
-        return Response(serializer.errors)
+        errors = dict(serializer.errors)
+        return Response({"errors": errors})
 
 class HideText(APIView):
     parser_classes = (MultiPartParser, FormParser)
