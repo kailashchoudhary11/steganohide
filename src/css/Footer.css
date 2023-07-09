@@ -1,10 +1,14 @@
   .text-white {
     color: white;
+    font-weight: bold;
+    
   }
 
-  .glassmorphism-footer {
-    width: 98vw;
+.glassmorphism-footer {
+  background: linear-gradient(143deg, #006484, #01143f, #005e9e, #5a1033);
+    width: 100%;
     position: absolute;
     left: 0;
     text-align: center;
-  }
+   border-top: 1px solid rgba(245, 245, 245, 0.7);
+}
