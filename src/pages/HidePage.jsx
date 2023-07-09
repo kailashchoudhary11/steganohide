@@ -2,6 +2,8 @@ import axios from "axios";
 import { Form, useActionData } from "react-router-dom";
 import { saveAs } from "file-saver";
 import "../css/hide.css";
+import Navbar from "../components/Navbar";
+import Footer from "../components/Footer";
 
 import HideImage from "../assets/hide.jpg";
 
@@ -26,6 +28,8 @@ export default function HidePage() {
   }
 
   return !actionData ? (
+    <>
+     <Navbar />
     <div className="glass-container2">
       <div className="form-container">
         <div className="image-container">
@@ -59,6 +63,8 @@ export default function HidePage() {
         </div>
       </div>
     </div>
+    <Footer />
+    </>
   ) : (
     <div className="container">
       <h1>Processed Image</h1>

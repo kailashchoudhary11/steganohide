@@ -11,10 +11,11 @@ import RevealPage, { action as revealPageAction } from "./pages/RevealPage";
 
 const router = createBrowserRouter(
   createRoutesFromElements(
-    <Route path="/" element={<Layout />}>
+
+    <Route>
       <Route index element={<Home />} />
-      <Route action={hidePageAction} path="hide" element={<HidePage />} />
-      <Route action={revealPageAction} path="reveal" element={<RevealPage />} />
+      <Route action={hidePageAction} path="/hide" element={<HidePage />} />
+      <Route action={revealPageAction} path="/reveal" element={<RevealPage />} />
     </Route>,
   ),
 );

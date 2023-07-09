@@ -11,9 +11,9 @@ function Navbar() {
         </NavLink>
       </div>
       <div className="navbar-right">
-        <NavLink className={({ isActive }) => (isActive ? "active-link" : "")} to=".">Home</NavLink>
-        <NavLink className={({ isActive }) => (isActive ? "active-link" : "")} to="hide">Hide</NavLink>
-        <NavLink className={({ isActive }) => (isActive ? "active-link" : "")} to="reveal">Reveal</NavLink>
+        <NavLink className={({ isActive }) => (isActive ? "active-link" : "")} to="/">Home</NavLink>
+        <NavLink className={({ isActive }) => (isActive ? "active-link" : "")} to="/hide">Hide</NavLink>
+        <NavLink className={({ isActive }) => (isActive ? "active-link" : "")} to="/reveal">Reveal</NavLink>
       </div>
     </nav>
   );

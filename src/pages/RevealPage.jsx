@@ -7,6 +7,9 @@ import { GoCopy } from "react-icons/go";
 import { FcCheckmark } from "react-icons/fc";
 import RevealImage from "../assets/reveal.jpg";
 
+import Navbar from "../components/Navbar";
+import Footer from "../components/Footer";
+
 export async function action({ request }) {
   const formData = await request.formData();
   try {
@@ -29,6 +32,8 @@ export default function RevealPage() {
   }
 
   return !actionData || (actionData && actionData.error) ? (
+    <>
+    <Navbar/>
     <div className="glass-container2">
       <div className="form-container">
         <div className="image-container">
@@ -60,6 +65,8 @@ export default function RevealPage() {
         </div>
       </div>
     </div>
+    <Footer/>
+    </>
   ) : (
     <div className="container">
       <h1>Your Secret Text:</h1>
