@@ -10,6 +10,7 @@ import HidePage, { action as hidePageAction } from "./pages/HidePage";
 import RevealPage, { action as revealPageAction } from "./pages/RevealPage";
 import LoginPage, { action as loginPageAction } from "./pages/LoginPage";
 import RegisterPage, { action as registerPageAction } from "./pages/RegisterPage";
+import Slider from "./pages/Slider";
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -19,6 +20,7 @@ const router = createBrowserRouter(
       <Route action={revealPageAction} path="reveal" element={<RevealPage />} />
       <Route action={loginPageAction} path="/login" element={<LoginPage />} />
       <Route action={registerPageAction} path="/register" element={<RegisterPage />} />
+      <Route action={registerPageAction} path="/slider" element={<Slider />} />
     </Route>,
   ),
 );
