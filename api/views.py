@@ -10,6 +10,7 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework_simplejwt.views import TokenRefreshView, TokenObtainPairView
 from rest_framework_simplejwt.serializers import TokenRefreshSerializer
 from rest_framework_simplejwt.exceptions import InvalidToken
+from django.http import FileResponse
 
 class CookieTokenRefreshSerializer(TokenRefreshSerializer):
     refresh = None
@@ -61,6 +62,11 @@ class HideText(APIView):
         
         image = get_processed_image(raw_img, secret_msg, password)
         data = {"img": image}
+
+        response = FileResponse(image)
+        response['Content-Type'] = 'application/octet-stream'
+        response['Content-Disposition'] = 'attachment; filename="foo.jpeg"'
+        return response
 
         serializer = SecretInfoSerializer(data=data, context={"request": request})
         if serializer.is_valid():
