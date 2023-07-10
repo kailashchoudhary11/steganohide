@@ -3,11 +3,27 @@ from django.contrib.auth.password_validation import validate_password
 from rest_framework import serializers
 from rest_framework.validators import UniqueValidator
 from .models import SecretInfo
+from cloudinary.models import CloudinaryField
+from cloudinary.uploader import upload
 
 class SecretInfoSerializer(serializers.ModelSerializer):
+    img = serializers.ImageField()
+
     class Meta:
         model = SecretInfo
         fields = "__all__"
+    
+    def create(self, validated_data):
+        img = validated_data.pop('img')
+        result = upload(img)
+        validated_data['img'] = result['url']
+        return super().create(validated_data)
+
+    def to_representation(self, instance):
+        data = super().to_representation(instance)
+        data['img'] = instance.img
+        return data
+
 
 class UserSerializer(serializers.ModelSerializer):
     email = serializers.EmailField(required=True, validators=[UniqueValidator(queryset=User.objects.all())])

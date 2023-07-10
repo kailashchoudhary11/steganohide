@@ -188,3 +188,4 @@ SESSION_COOKIE_SECURE = True
 
 CORS_ALLOW_CREDENTIALS = True
 
+CLOUDINARY_URL = f'cloudinary://{os.getenv("ClOUDINARY_API_KEY")}:{os.getenv("ClOUDINARY_API_SECRET")}@{os.getenv("ClOUDINARY_CLOUD_NAME")}'
