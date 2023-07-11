@@ -1,5 +1,5 @@
 import axios from "axios";
-import { Form, useActionData } from "react-router-dom";
+import { Form, useActionData, useNavigation } from "react-router-dom";
 import { saveAs } from "file-saver";
 import "../css/hide.css";
 
@@ -7,17 +7,19 @@ import HideImage from "../assets/hide.jpg";
 
 export async function action({ request }) {
   const formData = await request.formData();
+  const fileName = formData.get("image").name;
   const res = await axios.post("http://127.0.0.1:8000/api/hide/", formData, {
     headers: {
       "Content-Type": "multipart/form-data",
     },
+    responseType: "blob",
   });
-  console.log(res.data.name);
-  return res.data;
+  return { img: res.data, name: fileName };
 }
 
 export default function HidePage() {
   const actionData = useActionData();
+  const navigation = useNavigation();
 
   function handleDownloadClick() {
     const url = actionData?.img;
@@ -38,12 +40,14 @@ export default function HidePage() {
               name="secret_text"
               className="input-field"
               placeholder="Secret Text"
+              required
             />
             <input
               type="password"
               name="password"
               className="input-field"
               placeholder="Password"
+              required
             />
             <input
               type="file"
@@ -51,9 +55,14 @@ export default function HidePage() {
               name="image"
               accept="image/png, image/gif, image/jpeg"
               className="input-field"
+              required
             />
-            <button type="submit" className="submit-button2">
-              Submit
+            <button disabled={navigation.state === "submitting"} type="submit" className="submit-button2">
+              {
+                navigation.state === "submitting"
+                  ? "Processing..."
+                  : "Submit"
+              }
             </button>
           </Form>
         </div>
@@ -63,7 +72,7 @@ export default function HidePage() {
     <div className="container">
       <h1>Processed Image</h1>
       <div className="image-container2">
-        <img src={actionData?.img} alt="Processed" />
+        <img src={URL.createObjectURL(actionData?.img)} alt="Processed" />
       </div>
       <button
         type="button"
