@@ -1,44 +1,18 @@
+from .models import SecretInfo
+from .serializers import SecretInfoSerializer, UserSerializer
+from .utils import get_processed_image, get_text
+
+from django.http import FileResponse
+from django.conf import settings
+from django.contrib.auth import authenticate, login
+
 from rest_framework import status
 from rest_framework.parsers import MultiPartParser, FormParser
 from rest_framework.response import Response
 from rest_framework.views import APIView
-from .models import SecretInfo
-from .serializers import SecretInfoSerializer, UserSerializer
-from .utils import get_processed_image, get_text
 from rest_framework.permissions import IsAuthenticated
 
-from rest_framework_simplejwt.views import TokenRefreshView, TokenObtainPairView
-from rest_framework_simplejwt.serializers import TokenRefreshSerializer
-from rest_framework_simplejwt.exceptions import InvalidToken
-from django.http import FileResponse
-
-class CookieTokenRefreshSerializer(TokenRefreshSerializer):
-    refresh = None
-    def validate(self, attrs):
-        attrs['refresh'] = self.context['request'].COOKIES.get('refresh_token')
-        if attrs['refresh']:
-            return super().validate(attrs)
-        else:
-            raise InvalidToken('No valid token found in cookie \'refresh_token\'')
-
-class CookieTokenObtainPairView(TokenObtainPairView):
-    def finalize_response(self, request, response, *args, **kwargs):
-        if response.data.get('refresh'):
-            cookie_max_age = 3600 * 24 * 14 # 14 days
-            response.set_cookie('refresh_token', response.data['refresh'], max_age=cookie_max_age, httponly=True, domain="http://localhost:5173" )
-            del response.data['refresh']
-        return super().finalize_response(request, response, *args, **kwargs)
-
-class CookieTokenRefreshView(TokenRefreshView):
-    def finalize_response(self, request, response, *args, **kwargs):
-        if response.data.get('refresh'):
-            cookie_max_age = 3600 * 24 * 14 # 14 days
-            response.set_cookie('refresh_token', response.data['refresh'], max_age=cookie_max_age, httponly=True)
-            del response.data['refresh']
-    serializer_class = CookieTokenRefreshSerializer
-
 class RegisterUser(APIView):
-
     def post(self, request):
         serializer = UserSerializer(data=request.data)
         if serializer.is_valid():
@@ -46,6 +20,20 @@ class RegisterUser(APIView):
             return Response({"response": "User Created"})
         errors = dict(serializer.errors)
         return Response({"errors": errors})
+
+class LoginUser(APIView):
+    def post(self, request):
+        username = request.data.get("username")
+        password = request.data.get("password")
+
+        user = authenticate(request, username=username, password=password)
+
+        if user is not None:
+            login(request, user)
+            return Response({"message": "Logged in successfully"})
+
+        return Response({"error": "Invalid Credentials"}, status=status.HTTP_400_BAD_REQUEST)
+
 
 class HideText(APIView):
     parser_classes = (MultiPartParser, FormParser)
@@ -83,7 +71,6 @@ class Endpoints(APIView):
         return Response(endpoints)
 
 class RevealText(APIView):
-
     parser_classes = (FormParser, MultiPartParser)
 
     def post(self, request):
@@ -101,3 +88,9 @@ class RevealText(APIView):
                 error_msg = 'Incorrect Password'
                 
             return Response(data={'error': error_msg}, status=status.HTTP_401_UNAUTHORIZED)
+
+class PasswordStorage(APIView):
+    permission_classes = [IsAuthenticated, ]
+
+    def get(self, request):
+        return Response("Saved Passwords")

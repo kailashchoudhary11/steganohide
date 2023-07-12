@@ -8,6 +8,9 @@ export async function action({ request }) {
       "http://127.0.0.1:8000/api/register/",
       formData,
     );
+
+    console.log(res.data);
+
     if (res.data?.errors) {
       const { errors } = res.data;
       const values = Object.fromEntries(formData);
