@@ -1,9 +1,6 @@
 from django.urls import path
-from .views import Endpoints, HideText, RevealText, RegisterUser, CookieTokenRefreshView, CookieTokenObtainPairView
-from rest_framework_simplejwt.views import (
-    TokenObtainPairView,
-    TokenRefreshView,
-)
+from .views import Endpoints, HideText, LoginUser, PasswordStorage, RegisterUser, RevealText 
+
 
 app_name = 'api'
 
@@ -15,8 +12,8 @@ urlpatterns = [
 
     # Auth
     path('register/', RegisterUser.as_view(), name='register_user'),
+    path('login/', LoginUser.as_view(), name='login_user'),
 
-    # JWT Authentication
-    path('token/', CookieTokenObtainPairView.as_view(), name='token_obtain_pair'),
-    path('token/refresh/', CookieTokenRefreshView.as_view(), name='token_refresh'),
+    # Password Storage
+    path('password_storage/', PasswordStorage.as_view(), name='password_storage'),
 ]
