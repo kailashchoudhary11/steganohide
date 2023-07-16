@@ -16,10 +16,13 @@ data = b'hello world'
 password = b"this is my password and it is so awesome"
 
 # hide data in image
-def get_processed_image(raw_img, secret_text, password):
+def get_processed_image(raw_img, secret_text, password=None, key=None):
+    if key is None:
+        key = get_key(password)
+
     with Image.open(raw_img) as img:
         img = img.convert('RGB')
-        enc_text = encrypt(secret_text, password).decode('latin1')
+        enc_text = encrypt(secret_text, key).decode('latin1')
         secret = lsb.hide(img, enc_text)
     img_io = BytesIO()
     secret.save(img_io, format="PNG", quality=100)
@@ -27,9 +30,12 @@ def get_processed_image(raw_img, secret_text, password):
     return image
 
 # get data from image
-def get_text(image, password):
+def get_text(image, password=None, key=None):
+    if key is None:
+        key = get_key(password)
+
     enc_text = lsb.reveal(image).encode('latin1')
-    secret_data = decrypt(enc_text, password)
+    secret_data = decrypt(enc_text, key)
     return secret_data
 
 # get key from password
@@ -39,15 +45,15 @@ def get_key(password):
     return key
 
 # encrypt the data
-def encrypt(data, password):
-    key = get_key(password)
+def encrypt(data, key):
     cipher = AES.new(key, AES.MODE_ECB)
     cipher_text = cipher.encrypt(pad(data, BLOCK_SIZE))
     return cipher_text
 
 # decrypt the encrypted data
-def decrypt(enc_data, password):
-    key = get_key(password)
+def decrypt(enc_data, key):
     decipher = AES.new(key, AES.MODE_ECB)
     msg_dec = decipher.decrypt(enc_data)
     return unpad(msg_dec, BLOCK_SIZE).decode('utf-8')
+
+

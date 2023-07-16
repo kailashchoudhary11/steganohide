@@ -3,11 +3,16 @@ import { Form, useActionData } from "react-router-dom";
 
 export async function action({ request }) {
   const formData = await request.formData();
-
+  const requestHeaders = {
+    Origin: "http://localhost:5173",
+    withCredentials: true,
+  };
   try {
-    const res = await axios.post("http://localhost:8000/api/login/", formData, {
-      withCredentials: true,
-    });
+    const res = await axios.post(
+      "http://localhost:8000/api/login/",
+      formData,
+      requestHeaders,
+    );
     console.log(res.data);
     return res.data;
   } catch (error) {

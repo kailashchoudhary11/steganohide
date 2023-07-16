@@ -148,4 +148,8 @@ CORS_ALLOW_HEADERS = [
 
 CORS_ALLOW_CREDENTIALS = True
 
+CSRF_TRUSTED_ORIGINS = [
+    'http://localhost:5173',
+]
+
 CLOUDINARY_URL = f'cloudinary://{os.getenv("ClOUDINARY_API_KEY")}:{os.getenv("ClOUDINARY_API_SECRET")}@{os.getenv("ClOUDINARY_CLOUD_NAME")}'

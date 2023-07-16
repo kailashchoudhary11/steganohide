@@ -1,6 +1,6 @@
-from .models import SecretInfo
-from .serializers import SecretInfoSerializer, UserSerializer
-from .utils import get_processed_image, get_text
+from .models import SecuredPasswordStorage
+from .serializers import SecureStorageSerializer, UserSerializer
+from .utils import get_processed_image, get_text, get_key
 
 from django.http import FileResponse
 from django.conf import settings
@@ -30,6 +30,7 @@ class LoginUser(APIView):
 
         if user is not None:
             login(request, user)
+            request.session["enc_key"] = str(get_key(username + password))
             return Response({"message": "Logged in successfully"})
 
         return Response({"error": "Invalid Credentials"}, status=status.HTTP_400_BAD_REQUEST)
@@ -37,11 +38,6 @@ class LoginUser(APIView):
 
 class HideText(APIView):
     parser_classes = (MultiPartParser, FormParser)
-
-    def get(self, request):
-        infos = SecretInfo.objects.all()
-        serializer = SecretInfoSerializer(infos, many=True, context={"request": request})
-        return Response(serializer.data)
 
     def post(self, request):
         raw_img = request.FILES.get('image')
@@ -55,15 +51,6 @@ class HideText(APIView):
         response['Content-Type'] = 'application/octet-stream'
         response['Content-Disposition'] = 'attachment; filename="foo.jpeg"'
         return response
-
-        serializer = SecretInfoSerializer(data=data, context={"request": request})
-        if serializer.is_valid():
-            serializer.save()
-            augmented_serializer_data = dict(serializer.data)
-            augmented_serializer_data['name'] = raw_img.name
-            return Response(augmented_serializer_data)
-
-        return Response(serializer.errors)
 
 class Endpoints(APIView):
     def get(self, request):
@@ -89,8 +76,28 @@ class RevealText(APIView):
                 
             return Response(data={'error': error_msg}, status=status.HTTP_401_UNAUTHORIZED)
 
-class PasswordStorage(APIView):
+class SecuredPasswordStorageView(APIView):
     permission_classes = [IsAuthenticated, ]
 
     def get(self, request):
-        return Response("Saved Passwords")
+        
+        saved_passwords = SecuredPasswordStorage.objects.filter(user=request.user)
+        serializer = SecureStorageSerializer(saved_passwords, many=True)
+        return Response(serializer.data)
+    
+    def post(self, request):
+        raw_img = request.FILES.get('image')
+        saved_password = request.data.get('password').encode('utf8')
+        service = request.data.get('service')
+        username = request.data.get('username')
+        
+        image = get_processed_image(raw_img, saved_password, key=request.session.get("enc_key"))
+        data = {"image": image, "user": request.user, "service": service, "username": username, }
+
+        serializer = SecureStorageSerializer(data=data, context={"request": request})
+
+        if serializer.is_valid():
+            serializer.save()
+            return Response("Password Stored Successfully")
+
+        return Response(serializer.errors)

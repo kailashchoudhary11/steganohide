@@ -2,15 +2,15 @@ from django.contrib.auth.models import User
 from django.contrib.auth.password_validation import validate_password
 from rest_framework import serializers
 from rest_framework.validators import UniqueValidator
-from .models import SecretInfo
+from .models import SecuredPasswordStorage
 from cloudinary.models import CloudinaryField
 from cloudinary.uploader import upload
 
-class SecretInfoSerializer(serializers.ModelSerializer):
+class SecureStorageSerializer(serializers.ModelSerializer):
     img = serializers.ImageField()
 
     class Meta:
-        model = SecretInfo
+        model = SecuredPasswordStorage
         fields = "__all__"
     
     def create(self, validated_data):

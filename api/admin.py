@@ -1,6 +1,6 @@
 from django.contrib import admin
-from .models import SecretInfo
+from .models import SecuredPasswordStorage
 
 # Register your models here.
 
-admin.site.register(SecretInfo)
+admin.site.register(SecuredPasswordStorage)

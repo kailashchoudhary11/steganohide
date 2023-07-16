@@ -9,8 +9,15 @@ import Home from "./pages/HomePage";
 import HidePage, { action as hidePageAction } from "./pages/HidePage";
 import RevealPage, { action as revealPageAction } from "./pages/RevealPage";
 import LoginPage, { action as loginPageAction } from "./pages/LoginPage";
-import RegisterPage, { action as registerPageAction } from "./pages/RegisterPage";
-import PasswordStoragePage, { loader as passwordStoragePageLoader } from "./pages/PasswordStoragePage";
+import RegisterPage, {
+  action as registerPageAction,
+} from "./pages/RegisterPage";
+import PasswordStoragePage, {
+  loader as passwordStoragePageLoader,
+} from "./pages/PasswordStoragePage";
+import StorePassword, {
+  action as storePasswordAction,
+} from "./pages/StorePassword";
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -19,8 +26,21 @@ const router = createBrowserRouter(
       <Route action={hidePageAction} element={<HidePage />} path="hide" />
       <Route action={revealPageAction} element={<RevealPage />} path="reveal" />
       <Route action={loginPageAction} element={<LoginPage />} path="login" />
-      <Route action={registerPageAction} element={<RegisterPage />} path="register" />
-      <Route element={<PasswordStoragePage />} loader={passwordStoragePageLoader} path="password_storage" />
+      <Route
+        action={registerPageAction}
+        element={<RegisterPage />}
+        path="register"
+      />
+      <Route
+        element={<PasswordStoragePage />}
+        loader={passwordStoragePageLoader}
+        path="password_storage"
+      />
+      <Route
+        action={storePasswordAction}
+        element={<StorePassword />}
+        path="store_password"
+      />
     </Route>,
   ),
 );
