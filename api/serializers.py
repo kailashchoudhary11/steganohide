@@ -7,21 +7,22 @@ from cloudinary.models import CloudinaryField
 from cloudinary.uploader import upload
 
 class SecureStorageSerializer(serializers.ModelSerializer):
-    img = serializers.ImageField()
+    image = serializers.ImageField()
 
     class Meta:
         model = SecuredPasswordStorage
         fields = "__all__"
     
     def create(self, validated_data):
-        img = validated_data.pop('img')
-        result = upload(img)
-        validated_data['img'] = result['url']
+        print("Creating...")
+        image = validated_data.pop('image')
+        result = upload(image)
+        validated_data['image'] = result['url']
         return super().create(validated_data)
 
     def to_representation(self, instance):
         data = super().to_representation(instance)
-        data['img'] = instance.img
+        data['image'] = instance.image
         return data
 
 

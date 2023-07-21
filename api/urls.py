@@ -1,7 +1,5 @@
 from django.urls import path
 from .views import Endpoints, HideText, LoginUser, RegisterUser, RevealText, SecuredPasswordStorageView
-
-
 app_name = 'api'
 
 urlpatterns = [
