@@ -1,4 +1,10 @@
-import { Link, redirect, useLoaderData } from "react-router-dom";
+import { useEffect, useState } from "react";
+import {
+  Link,
+  redirect,
+  useLoaderData,
+  useSearchParams,
+} from "react-router-dom";
 import getAxiosInstance from "../utils/getAxiosInstance";
 
 export async function loader() {
@@ -16,9 +22,23 @@ export async function loader() {
 
 export default function PasswordStoragePage() {
   const data = useLoaderData();
+  const [searchParams, setSearchParams] = useSearchParams();
+  const [message, setMessage] = useState();
+
+  useEffect(() => {
+    const msg = searchParams.get("message");
+    if (msg) {
+      setMessage(msg);
+      setSearchParams((prevParams) => {
+        prevParams.delete("message");
+        return prevParams;
+      });
+    }
+  }, []);
 
   return (
     <div>
+      {message && <div style={{ color: "green" }}>Logged In SuccessFully</div>}
       <h1>Secured Password Storage</h1>
       <Link to="/store_password">Store New Password</Link>
       {data?.map((pass) => (
