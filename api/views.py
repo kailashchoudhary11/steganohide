@@ -1,5 +1,5 @@
 from .models import SecuredPasswordStorage
-from .serializers import SecureStorageSerializer, UserSerializer
+from .serializers import PasswordRevealSerializer, SecureStorageSerializer, UserSerializer
 from .utils import get_processed_image, get_text, get_key
 
 from django.http import FileResponse
@@ -82,19 +82,19 @@ class SecuredPasswordStorageView(APIView):
     def get(self, request):
         
         saved_passwords = SecuredPasswordStorage.objects.filter(user=request.user)
-        serializer = SecureStorageSerializer(saved_passwords, many=True)
+        serializer = PasswordRevealSerializer(saved_passwords, many=True)
         return Response(serializer.data)
     
     def post(self, request):
         raw_img = request.FILES.get('image')
         secret_msg = request.data.get('password').encode('utf8')
-        password = "test".encode('utf8')
+        password = request.session.get("enc_key")
         
         image = get_processed_image(raw_img, secret_msg, password)
 
         service = request.data.get('service')
         username = request.data.get('username')
-        data = {"image": image, "user": request.user, "service": service, "username": username, "password": password}
+        data = {"image": image, "user": request.user.id, "service": service, "username": username, "password": secret_msg}
 
         serializer = SecureStorageSerializer(data=data, context={"request": request})
 

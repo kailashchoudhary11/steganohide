@@ -10,7 +10,6 @@ export async function action({ request }) {
       headers: {
         "Content-Type": "multipart/form-data",
       },
-      responseType: "blob",
     });
 
     console.log(res.data);
