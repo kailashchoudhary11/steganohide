@@ -77,7 +77,7 @@ class RevealText(APIView):
             return Response(data={'error': error_msg}, status=status.HTTP_401_UNAUTHORIZED)
 
 class SecuredPasswordStorageView(APIView):
-    # permission_classes = [IsAuthenticated, ]
+    permission_classes = [IsAuthenticated, ]
 
     def get(self, request):
         
@@ -90,10 +90,7 @@ class SecuredPasswordStorageView(APIView):
         secret_msg = request.data.get('password').encode('utf8')
         password = "test".encode('utf8')
         
-        print("processinnnng image")
-        print(raw_img)
         image = get_processed_image(raw_img, secret_msg, password)
-        print("image processed")
 
         service = request.data.get('service')
         username = request.data.get('username')
