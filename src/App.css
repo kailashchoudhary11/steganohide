@@ -130,7 +130,6 @@ h1:hover::after {
   bottom: -10px;
   z-index: -1;
   filter: blur(10px);
-  background-image: url(path_to_your_image.jpg);
   background-size: cover;
   border-radius: 20px;
   opacity: 0.8;

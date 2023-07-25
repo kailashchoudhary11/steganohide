@@ -1,5 +1,3 @@
-import { useEffect } from "react";
-import axios from "axios";
 import "../App.css";
 import "../css/button.css";
 import { Link } from "react-router-dom";
@@ -9,14 +7,6 @@ import MissionImage from "../assets/mission.jpg";
 import SecurityImage from "../assets/security.png";
 
 export default function Home() {
-  useEffect(() => {
-    async function getData() {
-      const res = await axios.get("http://127.0.0.1:8000/api/hide/");
-      console.log(res);
-    }
-    getData();
-  }, []);
-
   return (
     <div className="section">
       <div className="hero">
