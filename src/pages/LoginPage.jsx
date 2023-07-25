@@ -8,8 +8,7 @@ export async function action({ request }) {
   try {
     const axiosInstance = getAxiosInstance();
     const res = await axiosInstance.post("/api/login/", formData);
-    console.log(res.data);
-    return redirect("/password_storage?message=Logged In Successfully");
+    return redirect(`/password_storage?message=${res.data.message}`);
   } catch (error) {
     console.log(error);
     return error.response.data;
