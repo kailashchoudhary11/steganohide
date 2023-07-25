@@ -1,17 +1,13 @@
-import axios from "axios";
 import { Form, useActionData } from "react-router-dom";
+import getAxiosInstance from "../utils/getAxiosInstance";
 
 export async function action({ request }) {
   const formData = await request.formData();
-  const requestHeaders = {
-    Origin: "http://localhost:5173",
-    withCredentials: true,
-  };
   try {
-    const res = await axios.post(
-      "http://localhost:8000/api/login/",
+    const axiosInstance = getAxiosInstance();
+    const res = await axiosInstance.post(
+      "/api/login/",
       formData,
-      requestHeaders,
     );
     console.log(res.data);
     return res.data;

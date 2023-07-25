@@ -1,10 +1,10 @@
-import axios from "axios";
 import { Link, redirect } from "react-router-dom";
+import getAxiosInstance from "../utils/getAxiosInstance";
 
 export async function loader() {
   try {
-    const res = await axios.get("http://localhost:8000/api/password_storage/", {
-      withCredentials: true,
+    const axiosInstance = getAxiosInstance();
+    const res = await axiosInstance.get("/api/password_storage/", {
     });
     console.log(res.data);
   } catch (error) {
