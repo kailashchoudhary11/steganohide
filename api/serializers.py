@@ -2,28 +2,35 @@ from django.contrib.auth.models import User
 from django.contrib.auth.password_validation import validate_password
 from rest_framework import serializers
 from rest_framework.validators import UniqueValidator
-from .models import SecretInfo
+from .models import SecuredPasswordStorage
 from cloudinary.models import CloudinaryField
 from cloudinary.uploader import upload
 
-class SecretInfoSerializer(serializers.ModelSerializer):
-    img = serializers.ImageField()
+class SecureStorageSerializer(serializers.ModelSerializer):
+    image = serializers.ImageField()
 
     class Meta:
-        model = SecretInfo
+        model = SecuredPasswordStorage
         fields = "__all__"
     
     def create(self, validated_data):
-        img = validated_data.pop('img')
-        result = upload(img)
-        validated_data['img'] = result['url']
+        print("Creating...")
+        image = validated_data.pop('image')
+        result = upload(image)
+        validated_data['image'] = result['url']
         return super().create(validated_data)
 
     def to_representation(self, instance):
         data = super().to_representation(instance)
-        data['img'] = instance.img
+        data['image'] = instance.image
         return data
 
+class PasswordRevealSerializer(serializers.ModelSerializer):
+    image = serializers.CharField()
+
+    class Meta:
+        model = SecuredPasswordStorage
+        fields = "__all__"
 
 class UserSerializer(serializers.ModelSerializer):
     email = serializers.EmailField(required=True, validators=[UniqueValidator(queryset=User.objects.all())])

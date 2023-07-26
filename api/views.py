@@ -1,10 +1,12 @@
-from .models import SecretInfo
-from .serializers import SecretInfoSerializer, UserSerializer
-from .utils import get_processed_image, get_text
+from .models import SecuredPasswordStorage
+from .serializers import PasswordRevealSerializer, SecureStorageSerializer, UserSerializer
+from .utils import get_processed_image, get_text, get_key
 
 from django.http import FileResponse
 from django.conf import settings
 from django.contrib.auth import authenticate, login
+
+import requests
 
 from rest_framework import status
 from rest_framework.parsers import MultiPartParser, FormParser
@@ -30,6 +32,7 @@ class LoginUser(APIView):
 
         if user is not None:
             login(request, user)
+            request.session["enc_key"] = str(get_key(username + password))
             return Response({"message": "Logged in successfully"})
 
         return Response({"error": "Invalid Credentials"}, status=status.HTTP_400_BAD_REQUEST)
@@ -37,11 +40,6 @@ class LoginUser(APIView):
 
 class HideText(APIView):
     parser_classes = (MultiPartParser, FormParser)
-
-    def get(self, request):
-        infos = SecretInfo.objects.all()
-        serializer = SecretInfoSerializer(infos, many=True, context={"request": request})
-        return Response(serializer.data)
 
     def post(self, request):
         raw_img = request.FILES.get('image')
@@ -55,15 +53,6 @@ class HideText(APIView):
         response['Content-Type'] = 'application/octet-stream'
         response['Content-Disposition'] = 'attachment; filename="foo.jpeg"'
         return response
-
-        serializer = SecretInfoSerializer(data=data, context={"request": request})
-        if serializer.is_valid():
-            serializer.save()
-            augmented_serializer_data = dict(serializer.data)
-            augmented_serializer_data['name'] = raw_img.name
-            return Response(augmented_serializer_data)
-
-        return Response(serializer.errors)
 
 class Endpoints(APIView):
     def get(self, request):
@@ -89,8 +78,49 @@ class RevealText(APIView):
                 
             return Response(data={'error': error_msg}, status=status.HTTP_401_UNAUTHORIZED)
 
-class PasswordStorage(APIView):
+class SecuredPasswordStorageView(APIView):
     permission_classes = [IsAuthenticated, ]
 
     def get(self, request):
-        return Response("Saved Passwords")
+        
+        saved_passwords = SecuredPasswordStorage.objects.filter(user=request.user)
+        serializer = PasswordRevealSerializer(saved_passwords, many=True)
+        return Response(serializer.data)
+    
+    def post(self, request):
+        raw_img = request.FILES.get('image')
+        secret_msg = request.data.get('password').encode('utf8')
+        password = request.session.get("enc_key").encode('utf8')
+        
+        image = get_processed_image(raw_img, secret_msg, key=key)
+
+        service = request.data.get('service')
+        username = request.data.get('username')
+        data = {"image": image, "user": request.user.id, "service": service, "username": username, "password": secret_msg}
+
+        serializer = SecureStorageSerializer(data=data, context={"request": request})
+
+        if serializer.is_valid():
+            serializer.save()
+            return Response("Password Stored Successfully")
+
+        return Response(serializer.errors)
+
+class SinglePasswordView(APIView):
+    permission_classes = [IsAuthenticated]
+    def get(self, request, id):
+        print("View called")
+        saved_password = SecuredPasswordStorage.objects.get(id=id)
+        response = requests.get(saved_password.image)
+        if response.status_code == 200:
+            image = response.content
+        else:
+            print("Unable to get image")
+            return Response({"error": "Cannot Fetch Password!"})
+        try:
+            text = get_text(image, key=request.session.get("enc_key"))
+            print(text)
+            return Response({"data": text})
+        except Exception as e:
+            print(e)
+        return Response({"error": "Unable the Reveal the Password"})

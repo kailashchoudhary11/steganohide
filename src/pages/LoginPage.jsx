@@ -1,22 +1,23 @@
-import axios from "axios";
-import { Form, useActionData } from "react-router-dom";
+import {
+  Form, useActionData, redirect, useNavigation,
+} from "react-router-dom";
+import getAxiosInstance from "../utils/getAxiosInstance";
 
 export async function action({ request }) {
   const formData = await request.formData();
-
   try {
-    const res = await axios.post("http://localhost:8000/api/login/", formData, {
-      withCredentials: true,
-    });
-    console.log(res.data);
-    return res.data;
+    const axiosInstance = getAxiosInstance();
+    const res = await axiosInstance.post("/api/login/", formData);
+    return redirect(`/password_storage?message=${res.data.message}`);
   } catch (error) {
+    console.log(error);
     return error.response.data;
   }
 }
 
 export default function LoginPage() {
   const actionData = useActionData();
+  const navigation = useNavigation();
   return (
     <div>
       <Form method="post">
@@ -45,11 +46,15 @@ export default function LoginPage() {
             />
           </label>
           <div style={{ color: "red", margin: "20px" }}>
-            {actionData?.detail}
+            {actionData?.error}
           </div>
         </div>
-        <button style={{ margin: "40px" }} type="submit">
-          Log In
+        <button
+          disabled={navigation.state === "submitting"}
+          style={{ margin: "40px" }}
+          type="submit"
+        >
+          {navigation.state === "submitting" ? "Logging In" : "Log In"}
         </button>
       </Form>
     </div>

@@ -130,22 +130,10 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 CORS_ORIGIN_ALLOW_ALL = True
 
-CORS_ALLOW_METHODS = [
-    'GET',
-    'POST',
-    'PUT',
-    'PATCH',
-    'DELETE',
-    'OPTIONS',
-]
-
-CORS_ALLOW_HEADERS = [
-    'x-csrftoken',
-    'Accept',
-    'Content-Type',
-    'Origin',
-]
-
 CORS_ALLOW_CREDENTIALS = True
+
+CSRF_TRUSTED_ORIGINS = [
+    'http://localhost:5173',
+]
 
 CLOUDINARY_URL = f'cloudinary://{os.getenv("ClOUDINARY_API_KEY")}:{os.getenv("ClOUDINARY_API_SECRET")}@{os.getenv("ClOUDINARY_CLOUD_NAME")}'
