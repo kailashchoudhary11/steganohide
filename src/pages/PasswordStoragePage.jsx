@@ -43,7 +43,9 @@ export default function PasswordStoragePage() {
       <Link to="/store_password">Store New Password</Link>
       {data?.map((pass) => (
         <div key={pass.id}>
-          <img style={{ width: "200px" }} src={pass.image} alt="Password" />
+          <Link to={`/single_password/${pass.id}`}>
+            <img style={{ width: "200px" }} src={pass.image} alt="Password" />
+          </Link>
           <span>{pass.service}</span>
           <span>{pass.username}</span>
           <span>

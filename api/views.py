@@ -6,6 +6,8 @@ from django.http import FileResponse
 from django.conf import settings
 from django.contrib.auth import authenticate, login
 
+import requests
+
 from rest_framework import status
 from rest_framework.parsers import MultiPartParser, FormParser
 from rest_framework.response import Response
@@ -88,9 +90,9 @@ class SecuredPasswordStorageView(APIView):
     def post(self, request):
         raw_img = request.FILES.get('image')
         secret_msg = request.data.get('password').encode('utf8')
-        password = request.session.get("enc_key")
+        password = request.session.get("enc_key").encode('utf8')
         
-        image = get_processed_image(raw_img, secret_msg, password)
+        image = get_processed_image(raw_img, secret_msg, key=key)
 
         service = request.data.get('service')
         username = request.data.get('username')
@@ -103,3 +105,22 @@ class SecuredPasswordStorageView(APIView):
             return Response("Password Stored Successfully")
 
         return Response(serializer.errors)
+
+class SinglePasswordView(APIView):
+    permission_classes = [IsAuthenticated]
+    def get(self, request, id):
+        print("View called")
+        saved_password = SecuredPasswordStorage.objects.get(id=id)
+        response = requests.get(saved_password.image)
+        if response.status_code == 200:
+            image = response.content
+        else:
+            print("Unable to get image")
+            return Response({"error": "Cannot Fetch Password!"})
+        try:
+            text = get_text(image, key=request.session.get("enc_key"))
+            print(text)
+            return Response({"data": text})
+        except Exception as e:
+            print(e)
+        return Response({"error": "Unable the Reveal the Password"})

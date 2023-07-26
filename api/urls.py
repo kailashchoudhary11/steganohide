@@ -1,5 +1,5 @@
 from django.urls import path
-from .views import Endpoints, HideText, LoginUser, RegisterUser, RevealText, SecuredPasswordStorageView
+from .views import Endpoints, HideText, LoginUser, RegisterUser, RevealText, SecuredPasswordStorageView, SinglePasswordView
 app_name = 'api'
 
 urlpatterns = [
@@ -14,4 +14,5 @@ urlpatterns = [
 
     # Password Storage
     path('password_storage/', SecuredPasswordStorageView.as_view(), name='password_storage'),
+    path('single_password/<int:id>/', SinglePasswordView.as_view(), name='single_password'),
 ]
