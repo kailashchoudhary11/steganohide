@@ -33,7 +33,6 @@ def get_processed_image(raw_img, secret_text, password=None, key=None):
 def get_text(image, password=None, key=None):
     if key is None:
         key = get_key(password)
-
     enc_text = lsb.reveal(image).encode('latin1')
     secret_data = decrypt(enc_text, key)
     return secret_data

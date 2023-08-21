@@ -14,6 +14,8 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework.permissions import IsAuthenticated
 
+import urllib.request
+
 class RegisterUser(APIView):
     def post(self, request):
         serializer = UserSerializer(data=request.data)
@@ -32,7 +34,7 @@ class LoginUser(APIView):
 
         if user is not None:
             login(request, user)
-            request.session["enc_key"] = str(get_key(username + password))
+            request.session["enc_key"] = get_key(username + password).decode("latin1")
             return Response({"message": "Logged in successfully"})
 
         return Response({"error": "Invalid Credentials"}, status=status.HTTP_400_BAD_REQUEST)
@@ -83,20 +85,20 @@ class SecuredPasswordStorageView(APIView):
 
     def get(self, request):
         
-        saved_passwords = SecuredPasswordStorage.objects.filter(user=request.user)
+        saved_passwords = SecuredPasswordStorage.objects.filter(user=request.user).order_by("-updated")
         serializer = PasswordRevealSerializer(saved_passwords, many=True)
         return Response(serializer.data)
     
     def post(self, request):
         raw_img = request.FILES.get('image')
         secret_msg = request.data.get('password').encode('utf8')
-        password = request.session.get("enc_key").encode('utf8')
-        
+        key = request.session.get("enc_key").encode("latin1")
+        print(raw_img)
         image = get_processed_image(raw_img, secret_msg, key=key)
 
         service = request.data.get('service')
         username = request.data.get('username')
-        data = {"image": image, "user": request.user.id, "service": service, "username": username, "password": secret_msg}
+        data = {"image": image, "user": request.user.id, "service": service, "username": username}
 
         serializer = SecureStorageSerializer(data=data, context={"request": request})
 
@@ -111,16 +113,13 @@ class SinglePasswordView(APIView):
     def get(self, request, id):
         print("View called")
         saved_password = SecuredPasswordStorage.objects.get(id=id)
-        response = requests.get(saved_password.image)
-        if response.status_code == 200:
-            image = response.content
-        else:
-            print("Unable to get image")
-            return Response({"error": "Cannot Fetch Password!"})
-        try:
-            text = get_text(image, key=request.session.get("enc_key"))
-            print(text)
-            return Response({"data": text})
-        except Exception as e:
-            print(e)
-        return Response({"error": "Unable the Reveal the Password"})
+        
+        cloudinary.api
+       
+        print(image)
+        text = get_text(image, key = request.session.get("enc_key").encode("latin1"))
+        print(text)
+        return Response({"data": text})
+        # except Exception as e:
+        #     print(e)
+        return Response({"error": "Unable to Reveal the Password"})

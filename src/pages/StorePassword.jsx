@@ -1,7 +1,9 @@
-import { Form, useActionData } from "react-router-dom";
+import { Form, useActionData, redirect } from "react-router-dom";
 import getAxiosInstance from "../utils/getAxiosInstance";
 
 export async function action({ request }) {
+  // const urlParams = new URL(request.url).searchParams();
+  // console.log(urlParams);
   const formData = await request.formData();
   try {
     const axiosInstance = getAxiosInstance();
@@ -19,7 +21,7 @@ export async function action({ request }) {
       const values = Object.fromEntries(formData);
       return { errors, values };
     }
-    return res.data;
+    return redirect("/password_storage");
   } catch (error) {
     return error.response.data;
   }
