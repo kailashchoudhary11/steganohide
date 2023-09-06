@@ -12,8 +12,6 @@ export async function action({ request }) {
       },
     });
 
-    console.log(res.data);
-
     if (res.data?.errors) {
       const { errors } = res.data;
       const values = Object.fromEntries(formData);
