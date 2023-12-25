@@ -2,6 +2,7 @@ import {
   Form, useActionData, redirect, useNavigation,
 } from "react-router-dom";
 import getAxiosInstance from "../utils/getAxiosInstance";
+import "../css/login.css";
 
 export async function action({ request }) {
   const formData = await request.formData();
@@ -19,30 +20,30 @@ export default function LoginPage() {
   const actionData = useActionData();
   const navigation = useNavigation();
   return (
-    <div>
-      <Form method="post">
-        <div style={{ margin: "20px" }}>
+    <div className="glass-container3">
+      <Form method="post" className="form">
+        <div>
           <label style={{ margin: "20px" }} htmlFor="username">
-            Username
             <input
               defaultValue={actionData?.values?.username}
               type="text"
               name="username"
-              id="username"
+              className="input-field"
               placeholder="Username"
+              required
             />
           </label>
         </div>
 
         <div style={{ margin: "20px" }}>
           <label style={{ margin: "20px" }} htmlFor="password">
-            Password
             <input
               defaultValue={actionData?.values?.password}
               type="password"
               name="password"
-              id="password"
+              className="input-field"
               placeholder="Password"
+              required
             />
           </label>
           <div style={{ color: "red", margin: "20px" }}>
@@ -53,6 +54,7 @@ export default function LoginPage() {
           disabled={navigation.state === "submitting"}
           style={{ margin: "40px" }}
           type="submit"
+          className="submit-button2"
         >
           {navigation.state === "submitting" ? "Logging In" : "Log In"}
         </button>
